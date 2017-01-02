@@ -31,14 +31,15 @@ int AM2320::Read()
 	for(int s = 0; s < 8; s++) buf[s] = 0x00; 
 
 	Wire.beginTransmission(AM2320_address);
-	Wire.endTransmission();
+	Wire.endTransmission(1);
+	delay(1);
 	// запрос 4 байт (температуры и влажности)
 	Wire.beginTransmission(AM2320_address);
 	Wire.write(0x03);// запрос
 	Wire.write(0x00); // с 0-го адреса
 	Wire.write(0x04); // 4 байта
 	if (Wire.endTransmission(1) != 0) return 1;
-	delayMicroseconds(1600); //>1.5ms
+	delay(2); //>1.5ms
 	// считываем результаты запроса
 	Wire.requestFrom(AM2320_address, 0x08); 
 	for (int i = 0; i < 0x08; i++) buf[i] = Wire.read();
